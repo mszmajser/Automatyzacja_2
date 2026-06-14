@@ -1,0 +1,19 @@
+- name: Docker, Node, Npm installation
+  hosts: vps
+  become: yes
+
+  tasks:
+    - name: Update apt
+      ansible.builtin.apt:
+        update_cahce: yes
+
+        
+    - name: Install required packages
+      ansible.builtin.apt:
+        name:
+          - docker.io
+          - docker-compose
+          - nodejs
+          - Npm
+        state: present  
+
