@@ -3,17 +3,15 @@
   become: yes
 
   tasks:
-    - name: Update apt
-      ansible.builtin.apt:
-        update_cahce: yes
+  - name: Update apt
+    ansible.builtin.apt:
+      update_cache: yes
 
-        
-    - name: Install required packages
-      ansible.builtin.apt:
-        name:
-          - docker.io
-          - docker-compose
-          - nodejs
-          - Npm
-        state: present  
-
+  - name: Install required packages
+    ansible.builtin.apt:
+      name: 
+        - docker.io
+        - docker-compose
+        - nodejs
+        - npm
+      state: present
