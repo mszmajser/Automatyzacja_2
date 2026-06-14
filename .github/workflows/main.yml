@@ -1,0 +1,35 @@
+name: Build and Deploy with Ansible
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  install-on-vps:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Ansible
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+
+      - name: Configure SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Create Ansible Inventory
+        run: |
+          cat > ansible/inventory.ini <<EOF
+          [vps]
+          server ansible_host=${{secrets.VPS_HOST}} ansible_user=${{secrets.VPS_USER}}
+      -name: Run Ansible playbook on VPS
+        run: |
+          ansible-playbook -i ansible/inventory.ini ansible/install.yml
