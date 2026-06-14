@@ -30,6 +30,6 @@ jobs:
           cat > ansible/inventory.ini <<EOF
           [vps]
           server ansible_host=${{secrets.VPS_HOST}} ansible_user=${{secrets.VPS_USER}}
-      -name: Run Ansible playbook on VPS
+      - name: Run Ansible playbook on VPS
         run: |
           ansible-playbook -i ansible/inventory.ini ansible/install.yml
